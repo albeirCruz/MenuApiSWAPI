@@ -1,10 +1,12 @@
 package com.codigoPrueba.apiSwapi;
 
 import com.codigoPrueba.apiSwapi.herramientas.Api;
+import com.codigoPrueba.apiSwapi.herramientas.Json;
 import com.codigoPrueba.apiSwapi.modelos.Titulo;
 import com.codigoPrueba.apiSwapi.modelos.TituloOmbd;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -91,11 +93,18 @@ public class principal {
 
         String json = "";
 
-        conexion.setNumeroPelicula(index);
-        json = conexion.conexionApi();
-        TituloOmbd titulo = gson.fromJson(json, TituloOmbd.class);
-        Titulo pelicula = new Titulo(titulo);
-        System.out.println(pelicula);
+        try {
+            conexion.setNumeroPelicula(index);
+            json = conexion.conexionApi();
+            TituloOmbd titulo = gson.fromJson(json, TituloOmbd.class);
+            Titulo pelicula = new Titulo(titulo);
+            System.out.println(pelicula);
+            Json crearArchivo = new Json();
+            crearArchivo.crearArchivoJson(pelicula);
+        } catch (RuntimeException | IOException e){
+            System.out.println("No funciono y se cerro la consulta"+e.getMessage());
+        }
+
     }
 }
 
